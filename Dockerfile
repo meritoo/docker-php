@@ -85,14 +85,17 @@ RUN docker-php-ext-install \
 # PHP extensions (PECL):
 # - Xdebug
 # - Imagick
+# - APCu
 #
 RUN pecl install \
         xdebug \
         imagick \
+        apcu \
     && docker-php-ext-enable \
         xdebug \
         imagick \
         opcache \
+        apcu \
         intl \
         zip
 
