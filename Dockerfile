@@ -79,7 +79,8 @@ RUN docker-php-ext-install \
     pdo_mysql \
     opcache \
     intl \
-    zip
+    zip \
+    gd
 
 #
 # PHP extensions (PECL):
@@ -97,7 +98,8 @@ RUN pecl install \
         opcache \
         apcu \
         intl \
-        zip
+        zip \
+        gd
 
 COPY xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
