@@ -36,6 +36,11 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
 #
 RUN apt-get update \
     && apt-get install -y --no-install-recommends --fix-missing \
+        libpng-dev \
+        libfreetype6-dev \
+        libjpeg-dev \
+        libxpm-dev \
+        libwebp-dev \
         vim \
         git \
         unzip \
@@ -70,6 +75,16 @@ RUN sed -i 's/^# de_DE/de_DE/g; \
             s/^# pl_PL/pl_PL/g; \
             s/^# ru_RU/ru_RU/g;' /etc/locale.gen \
     && locale-gen
+
+#
+# Configure PHP extensions
+#
+RUN docker-php-ext-configure \
+    gd \
+    --with-freetype-dir=/usr/include/ \
+    --with-jpeg-dir=/usr/include/ \
+    --with-xpm-dir=/usr/include/ \
+    --with-webp-dir=/usr/include/
 
 #
 # PHP extensions
