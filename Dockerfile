@@ -36,6 +36,8 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
 #
 RUN apt-get update \
     && apt-get install -y --no-install-recommends --fix-missing \
+        libzip-dev \
+        libmagickwand-dev \
         libpng-dev \
         libfreetype6-dev \
         libjpeg-dev \
@@ -45,8 +47,6 @@ RUN apt-get update \
         git \
         unzip \
         openssl \
-        libzip-dev \
-        libmagickwand-dev \
         locales \
         ssh \
     && apt-get clean \
