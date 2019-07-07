@@ -124,12 +124,6 @@ COPY xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 # - timezone
 #
 COPY php.ini /usr/local/etc/php/php.ini
-ARG TIMEZONE
-RUN ln -snf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
-    && echo ${TIMEZONE} > /etc/timezone \
-    && printf '[PHP]\ndate.timezone = "%s"\n', ${TIMEZONE} > /usr/local/etc/php/conf.d/tzone.ini \
-    && "date"
-#RUN echo "\n""date.timezone = $TIMEZONE""\n" >> /usr/local/etc/php/php.ini
 
 #
 # Phing
@@ -184,3 +178,12 @@ RUN sed -i 's/^# export/export/g; \
 ENV PATH="/var/www/application/vendor/bin:${PATH}"
 
 WORKDIR /var/www/application
+
+#
+# Prepare entrypoint
+#
+COPY entrypoint.sh /opt/docker/entrypoint.sh
+RUN chmod 700 /opt/docker/entrypoint.sh
+
+ENTRYPOINT ["/opt/docker/entrypoint.sh"]
+CMD ["php-fpm"]
