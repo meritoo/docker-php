@@ -4,7 +4,7 @@ if [[ -n "${PHP_DATE_TIMEZONE+x}" ]]; then
     echo "date.timezone = ${PHP_DATE_TIMEZONE}" >> /usr/local/etc/php/conf.d/custom.ini
 
     ln -snf /usr/share/zoneinfo/${PHP_DATE_TIMEZONE} /etc/localtime
-    echo ${PHP_DATE_TIMEZONE} > /etc/timezone
+    echo "${PHP_DATE_TIMEZONE}" > /etc/timezone
 fi
 
 if [[ -n "${PHP_DISPLAY_ERRORS+x}" ]]; then
