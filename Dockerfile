@@ -49,6 +49,7 @@ RUN apt-get update \
         openssl \
         locales \
         ssh \
+        wget \
     && apt-get clean \
     && rm -rf \
         /var/lib/apt/lists/* \
