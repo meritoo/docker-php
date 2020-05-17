@@ -2,6 +2,12 @@ FROM php:7.3-fpm
 MAINTAINER Meritoo <github@meritoo.pl>
 
 #
+# Prepare scripts
+#
+COPY entrypoint.sh composer-install.sh /opt/docker/
+RUN chmod 700 /opt/docker/*
+
+#
 # Required to avoid bug/problems while installing Yarn:
 # a) related to https repositories
 #    E: The method driver /usr/lib/apt/methods/https could not be found.
@@ -145,12 +151,7 @@ ENV COMPOSER_ALLOW_SUPERUSER 1
 #
 # Composer + https://packagist.org/packages/hirak/prestissimo package
 #
-RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
-    && php -r "if (hash_file('SHA384', 'composer-setup.php') === \
-        '48e3236262b34d30969dca3c37281b3b4bbe3221bda826ac6a9a62d6444cdb0dcd0615698a5cbe587c3f0fe57a54d8f5') { echo \
-        'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" \
-    && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
-    && php -r "unlink('composer-setup.php');" \
+RUN /opt/docker/composer-install.sh \
     && composer global require \
         --no-plugins \
         --no-scripts \
@@ -179,12 +180,5 @@ RUN sed -i 's/^# export/export/g; \
 ENV PATH="/var/www/application/vendor/bin:${PATH}"
 
 WORKDIR /var/www/application
-
-#
-# Prepare entrypoint
-#
-COPY entrypoint.sh /opt/docker/entrypoint.sh
-RUN chmod 700 /opt/docker/entrypoint.sh
-
 ENTRYPOINT ["/opt/docker/entrypoint.sh"]
 CMD ["php-fpm"]
