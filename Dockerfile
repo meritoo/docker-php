@@ -128,7 +128,6 @@ COPY xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 #
 # PHP configuration:
 # - default configuration
-# - timezone
 #
 COPY php.ini /usr/local/etc/php/php.ini
 
