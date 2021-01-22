@@ -148,21 +148,10 @@ RUN pear channel-discover pear.phing.info \
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
 #
-# Composer + https://packagist.org/packages/hirak/prestissimo package
+# Composer
 #
 RUN /opt/docker/composer-install.sh \
-    && composer global require \
-        --no-plugins \
-        --no-scripts \
-        --no-progress \
-        --no-suggest \
-        --no-interaction \
-        --prefer-dist \
-        --optimize-autoloader \
-        --classmap-authoritative \
-        hirak/prestissimo \
     && rm -rf ~/.composer/cache/* \
-    && composer clear-cache \
     && composer --version
 
 #
