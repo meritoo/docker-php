@@ -34,7 +34,7 @@ RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
 # More:
 # https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions
 #
-RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
+RUN curl -sL https://deb.nodesource.com/setup_current.x | bash - \
     && apt-get install -y nodejs
 
 #
