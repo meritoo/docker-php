@@ -135,7 +135,7 @@ COPY php.ini /usr/local/etc/php/php.ini
 # Phing
 #
 RUN pear channel-discover pear.phing.info \
-    && pear install [--alldeps] phing/phing
+    && pear install phing/phing
 
 #
 # Composer - environment variables:
