@@ -1,4 +1,4 @@
-FROM php:7.3-fpm
+FROM php:7.4-fpm
 MAINTAINER Meritoo <github@meritoo.pl>
 
 #
@@ -88,10 +88,10 @@ RUN sed -i 's/^# de_DE/de_DE/g; \
 #
 RUN docker-php-ext-configure \
     gd \
-    --with-freetype-dir=/usr/include/ \
-    --with-jpeg-dir=/usr/include/ \
-    --with-xpm-dir=/usr/include/ \
-    --with-webp-dir=/usr/include/
+    --with-freetype \
+    --with-jpeg \
+    --with-xpm \
+    --with-webp
 
 #
 # PHP extensions
