@@ -56,6 +56,7 @@ RUN apt-get update \
         locales \
         ssh \
         wget \
+        rsync \
     && apt-get clean \
     && rm -rf \
         /var/lib/apt/lists/* \
