@@ -111,7 +111,7 @@ RUN docker-php-ext-install \
 # - APCu
 #
 RUN pecl install \
-        xdebug \
+        xdebug-3.1.6 \
         imagick \
         apcu \
     && docker-php-ext-enable \
