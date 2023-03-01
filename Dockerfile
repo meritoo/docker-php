@@ -49,6 +49,8 @@ RUN apt-get update \
         libjpeg-dev \
         libxpm-dev \
         libwebp-dev \
+        libc-client-dev \
+        libkrb5-dev \
         vim \
         git \
         unzip \
@@ -86,13 +88,17 @@ RUN sed -i 's/^# de_DE/de_DE/g; \
 
 #
 # Configure PHP extensions
+# - gd
+# - imap
 #
-RUN docker-php-ext-configure \
-    gd \
-    --with-freetype \
-    --with-jpeg \
-    --with-xpm \
-    --with-webp
+RUN docker-php-ext-configure gd \
+        --with-freetype \
+        --with-jpeg \
+        --with-xpm \
+        --with-webp && \
+    docker-php-ext-configure imap \
+        --with-kerberos \
+        --with-imap-ssl
 
 #
 # PHP extensions
@@ -103,7 +109,8 @@ RUN docker-php-ext-install \
     opcache \
     intl \
     zip \
-    gd
+    gd \
+    imap
 
 #
 # PHP extensions (PECL):
@@ -122,7 +129,8 @@ RUN pecl install \
         apcu \
         intl \
         zip \
-        gd
+        gd \
+        imap
 
 COPY xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
