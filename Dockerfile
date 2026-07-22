@@ -2,34 +2,32 @@ FROM php:8.1-fpm
 MAINTAINER Meritoo <github@meritoo.pl>
 
 #
+# Download the official PHP extension installer tool
+#
+COPY --from=ghcr.io/mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
+
+#
 # Prepare scripts
 #
 COPY entrypoint.sh composer-install.sh /opt/docker/
 RUN chmod 700 /opt/docker/*
 
 #
-# Required to avoid bug/problems while installing Yarn:
-# a) related to https repositories
-#    E: The method driver /usr/lib/apt/methods/https could not be found.
-# b) missing library "gnupg"
-#    E: gnupg, gnupg2 and gnupg1 do not seem to be installed, but one of them is required for this operation
-#    curl: (23) Failed writing body (517 != 1369)
+# Install Yarn (https://yarnpkg.com)
 #
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-        apt-transport-https \
-        gnupg
-
-#
-# Yarn (https://yarnpkg.com)
-#
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
-    && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
+        curl \
+        ca-certificates \
+        gnupg \
+    && mkdir -p /etc/apt/keyrings \
+    && curl -fsSL https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor -o /etc/apt/keyrings/yarn.gpg \
+    && echo "deb [signed-by=/etc/apt/keyrings/yarn.gpg] https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
     && apt-get update \
     && apt-get install -y --no-install-recommends yarn
 
 #
-# Node.js
+# Install Node.js
 #
 # More:
 # https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions
@@ -38,7 +36,7 @@ RUN curl -sL https://deb.nodesource.com/setup_current.x | bash - \
     && apt-get install -y nodejs
 
 #
-# Tools & libraries
+# Install tools & libraries
 #
 RUN apt-get update \
     && apt-get install -y --no-install-recommends --fix-missing \
@@ -49,7 +47,6 @@ RUN apt-get update \
         libjpeg-dev \
         libxpm-dev \
         libwebp-dev \
-        libc-client-dev \
         libkrb5-dev \
         vim \
         git \
@@ -59,7 +56,13 @@ RUN apt-get update \
         ssh \
         wget \
         rsync \
-        wkhtmltopdf \
+        fontconfig \
+        libxrender1 \
+        xfonts-75dpi \
+        xfonts-base \
+    && wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-3/wkhtmltox_0.12.6.1-3.bookworm_arm64.deb \
+    && apt-get install -y ./wkhtmltox_0.12.6.1-3.bookworm_arm64.deb \
+    && rm wkhtmltox_0.12.6.1-3.bookworm_arm64.deb \
     && apt-get clean \
     && rm -rf \
         /var/lib/apt/lists/* \
@@ -67,7 +70,7 @@ RUN apt-get update \
         /var/tmp/*
 
 #
-# Generating locales:
+# Generate locales:
 # - de_DE
 # - es_ES
 # - en_GB
@@ -88,23 +91,9 @@ RUN sed -i 's/^# de_DE/de_DE/g; \
     && locale-gen
 
 #
-# Configure PHP extensions
-# - gd
-# - imap
+# Install PHP extensions
 #
-RUN docker-php-ext-configure gd \
-        --with-freetype \
-        --with-jpeg \
-        --with-xpm \
-        --with-webp && \
-    docker-php-ext-configure imap \
-        --with-kerberos \
-        --with-imap-ssl
-
-#
-# PHP extensions
-#
-RUN docker-php-ext-install \
+RUN install-php-extensions \
     pdo \
     pdo_mysql \
     opcache \
