@@ -1,5 +1,5 @@
 FROM php:8.2-fpm
-MAINTAINER Meritoo <github@meritoo.pl>
+LABEL org.opencontainers.image.authors="Meritoo <github@meritoo.pl>"
 
 #
 # Download the official PHP extension installer tool
