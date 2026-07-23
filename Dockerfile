@@ -1,5 +1,5 @@
 FROM php:8.1-fpm
-MAINTAINER Meritoo <github@meritoo.pl>
+LABEL org.opencontainers.image.authors="Meritoo <github@meritoo.pl>"
 
 #
 # Download the official PHP extension installer tool
@@ -144,7 +144,7 @@ RUN pear channel-discover pear.phing.info \
 # More:
 # https://getcomposer.org/doc/03-cli.md#composer-allow-superuser
 #
-ENV COMPOSER_ALLOW_SUPERUSER 1
+ENV COMPOSER_ALLOW_SUPERUSER=1
 
 #
 # Composer
