@@ -144,7 +144,7 @@ RUN pear channel-discover pear.phing.info \
 # More:
 # https://getcomposer.org/doc/03-cli.md#composer-allow-superuser
 #
-ENV COMPOSER_ALLOW_SUPERUSER 1
+ENV COMPOSER_ALLOW_SUPERUSER=1
 
 #
 # Composer
