@@ -1,4 +1,4 @@
-FROM php:8.2-fpm
+FROM php:8.5-fpm
 LABEL org.opencontainers.image.authors="Meritoo <github@meritoo.pl>"
 
 #
@@ -96,7 +96,6 @@ RUN sed -i 's/^# de_DE/de_DE/g; \
 RUN install-php-extensions \
     pdo \
     pdo_mysql \
-    opcache \
     intl \
     zip \
     gd \
@@ -115,12 +114,7 @@ RUN pecl install \
     && docker-php-ext-enable \
         xdebug \
         imagick \
-        opcache \
-        apcu \
-        intl \
-        zip \
-        gd \
-        imap
+        apcu
 
 COPY xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
